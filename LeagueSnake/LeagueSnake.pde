@@ -21,8 +21,11 @@ class Segment {
 // ***** GAME VARIABLES *****
 // All the game variables that will be shared by the game methods are here
 //*
-
-
+Segment head;
+int foodX;
+int foodY;
+int d = UP;
+int foodeaten = 0;
 
 
 
@@ -32,12 +35,16 @@ class Segment {
 //*
 
 void setup() {
+  frameRate(20);
+  head = new Segment(100,100);
+  size(500,500);
+  dropFood();
 }
 
 void dropFood() {
   //Set the food in a new random location
-foodx = (int)random(50);
-foody = (int)random(50);
+  foodX = ((int)random(50)*10);
+  foodY = ((int)random(50)*10);
 }
 
 
@@ -46,19 +53,24 @@ foody = (int)random(50);
 // ***** DRAW METHODS *****
 // These methods are used to draw the snake and its food 
 //*
-int foodx = (int)random(50);
-int foody = (int)random(50);
 
 void draw() {
+  background(#050505);
+  drawFood();
+  move();
+  drawSnake();
 }
 
 void drawFood() {
   //Draw the food
-  rect(foodx, foody, 20, 20);
+  fill(#0D12FA);
+rect(foodX,foodY,10, 10);
 }
 
 void drawSnake() {
   //Draw the head of the snake followed by its tail
+  fill(#F70032);
+  rect(head.x, head.y, 10 , 10);
 }
 
 
@@ -94,22 +106,25 @@ void keyPressed() {
 void move() {
   //Change the location of the Snake head based on the direction it is moving.
 
-  /*
-  switch(direction) {
+  
+  switch(d) {
    case UP:
-   // move head up here 
+   // move head up here head.y -= 10;
    break;
    case DOWN:
    // move head down here 
+   head.y += 10;
    break;
    case LEFT:
-   // figure it out 
+   // figure it out
+   head.x -= 10;
    break;
    case RIGHT:
    // mystery code goes here 
+   head.x += 10;
    break;
    }
-   */
+   checkBoundaries();
 }
 
 void checkBoundaries() {
