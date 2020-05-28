@@ -38,10 +38,11 @@ int foodEatenNow;
 
 void setup() {
   frameRate(10);
-  head = new Segment(400,400);
-  size(560,560);
+  head = new Segment(400, 400);
+  size(560, 560);
   dropFood();
 }
+
 //sasssss
 void dropFood() {
   //Set the food in a new random location
@@ -49,33 +50,30 @@ void dropFood() {
   foodY = ((int)random(20)*20 + 80);
 }
 
-
-
 //*
 // ***** DRAW METHODS *****
 // These methods are used to draw the snake and its food 
 //*
-
+//
 void draw() {
   background(#050505);
   drawFood();
   move();
   drawSnake();
-  manageTail();
+  //manageTail();
   eat();
-  
 }
 
 void drawFood() {
   //Draw the food
   fill(#0D12FA);
-rect(foodX,foodY,10, 10);
+  rect(foodX, foodY, 10, 10);
 }
 
 void drawSnake() {
   //Draw the head of the snake followed by its tail
   fill(#F70032);
-  rect(head.x, head.y, 10 , 10);
+  rect(head.x, head.y, 10, 10);
   manageTail();
 }
 
@@ -87,36 +85,29 @@ void drawSnake() {
 
 void drawTail() {
   //Draw each segment of the taildw
-  for(int i = 0; i < tail.size(); i++){
-  rect((tail.get(i).x), tail.get(i).y,10,10);
+  for (int i = 0; i < tail.size(); i++) {
+    rect((tail.get(i).x), tail.get(i).y, 10, 10);
+  }
+}
 
 
-}
-}
-//
 void manageTail() {
   //After drawing the tail, add a new segment at the "start" of the tail and remove the one at the "end" 
   //This produces the illusion of the snake tail moving.
-checkTailCollision();
-drawTail();
-tail.add(new Segment(head.x,head.y));
-
-if(foodEatenNow == foodEaten){
-tail.remove(0);
-
-}
+  checkTailCollision();
+  drawTail();
+  tail.add(new Segment(head.x, head.y));
+  tail.remove(0);
 }
 
 void checkTailCollision() {
   //If the snake crosses its own tail, shrink the tail back to one segment
-  for(int i = 0; i < tail.size(); i++){
-  if(head.x == tail.get(i).x ||  head.y == tail.get(i).y){
-  exit();
-  }
+  for (int i = 0; i < tail.size(); i++) {
+    if (head.x == tail.get(i).x &&  head.y == tail.get(i).y) {
+      exit();
+    }
   }
 }
-
-
 
 //*
 // ***** CONTROL METHODS *****
@@ -125,69 +116,64 @@ void checkTailCollision() {
 
 void keyPressed() {
   //Set the direction of the snake according to the arrow keys pressed
-    if (key == 'w') {
-      d = UP;
-    } else if (key == 's') {
-      d = DOWN;
-    } 
-   else if(key == 'a') {
+  if (key == 'w') {
+    d = UP;
+  } else if (key == 's') {
+    d = DOWN;
+  } else if (key == 'a') {
     d = LEFT;
-  } else if(key == 'd') {
+  } else if (key == 'd') {
     d = RIGHT;
   }
-  }
+}
+
 //
 void move() {
   //Change thed location of the Snake head based on the direction it is moving.
 
-  
   switch(d) {
-   case UP:
-   // move head up here 
-   head.y -= 10;
-   break;
-   case DOWN:
-   // move head down here 
-   head.y += 10;
-   break;
-   case LEFT:
-   // figure it out
-   head.x -= 10;
-   break;
-   case RIGHT:
-   // mystery code goes here 
-   head.x += 10;
-   break;
-   }
-   checkBoundaries();
+  case UP:
+    // move head up here 
+    head.y -= 10;
+    break;
+  case DOWN:
+    // move head down here 
+    head.y += 10;
+    break;
+  case LEFT:
+    // figure it out
+    head.x -= 10;
+    break;
+  case RIGHT:
+    // mystery code goes here 
+    head.x += 10;
+    break;
+  }
+  checkBoundaries();
 }
 
 void checkBoundaries() {
   //If the snake leaves the frame, make it reappear on the other side
-if(head.x <= 0){
-exit();
+  if (head.x <= 0) {
+    exit();
+  }
+  if (head.y <= 0) {
+    exit();
+  }
+  if (head.y >= 560) {
+    exit();
+  }//ss
+  if (head.x >= 560) {
+    exit();
+  }
 }
-if(head.y <= 0){
-exit();
-}
-if(head.y >= 500){
-exit();
-}
-if(head.x >= 500){
-exit();
-}
-}
-void eat(){
+void eat() {
   //When the snake eats the food, its tail should grow and more food appears
-if(foodY == head.y && foodX == head.x){
- dropFood();
-drawFood();
-foodEatenNow = foodEaten;
-foodEaten++;
-//sssss
-manageTail();
-}else{
-foodEatenNow = foodEaten;
-manageTail();
-}
+  if (foodY == head.y && foodX == head.x) {
+    dropFood();
+    //foodEatenNow = foodEaten;
+    foodEaten++;
+    tail.add(new Segment(head.x, head.y));
+    println(tail.size());
+  }
 }
