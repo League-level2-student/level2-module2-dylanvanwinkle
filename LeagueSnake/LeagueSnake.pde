@@ -21,12 +21,14 @@ class Segment {
 // ***** GAME VARIABLES *****
 // All the game variables that will be shared by the game methods are here
 //*
+ArrayList<Segment> tail = new ArrayList<Segment>();
 Segment head;
 int foodX;
 int foodY;
 int d = UP;
 int foodEaten = 0;
-
+int foodEatenNow;
+//
 
 
 //*
@@ -35,16 +37,16 @@ int foodEaten = 0;
 //*
 
 void setup() {
-  frameRate(20);
+  frameRate(10);
   head = new Segment(400,400);
-  size(500,500);
+  size(560,560);
   dropFood();
 }
-
+//sasssss
 void dropFood() {
   //Set the food in a new random location
-  foodX = ((int)random(40)*10);
-  foodY = ((int)random(40)*10);
+  foodX = ((int)random(20)*20 + 80);
+  foodY = ((int)random(20)*20 + 80);
 }
 
 
@@ -59,7 +61,9 @@ void draw() {
   drawFood();
   move();
   drawSnake();
+  manageTail();
   eat();
+  
 }
 
 void drawFood() {
@@ -72,6 +76,7 @@ void drawSnake() {
   //Draw the head of the snake followed by its tail
   fill(#F70032);
   rect(head.x, head.y, 10 , 10);
+  manageTail();
 }
 
 
@@ -81,16 +86,34 @@ void drawSnake() {
 //*
 
 void drawTail() {
-  //Draw each segment of the tail
-}
+  //Draw each segment of the taildw
+  for(int i = 0; i < tail.size(); i++){
+  rect((tail.get(i).x), tail.get(i).y,10,10);
 
+
+}
+}
+//
 void manageTail() {
   //After drawing the tail, add a new segment at the "start" of the tail and remove the one at the "end" 
   //This produces the illusion of the snake tail moving.
+checkTailCollision();
+drawTail();
+tail.add(new Segment(head.x,head.y));
+
+if(foodEatenNow == foodEaten){
+tail.remove(0);
+
+}
 }
 
 void checkTailCollision() {
   //If the snake crosses its own tail, shrink the tail back to one segment
+  for(int i = 0; i < tail.size(); i++){
+  if(head.x == tail.get(i).x ||  head.y == tail.get(i).y){
+  exit();
+  }
+  }
 }
 
 
@@ -113,27 +136,27 @@ void keyPressed() {
     d = RIGHT;
   }
   }
-
+//
 void move() {
-  //Change the location of the Snake head based on the direction it is moving.
+  //Change thed location of the Snake head based on the direction it is moving.
 
   
   switch(d) {
    case UP:
    // move head up here 
-   head.y -= 20;
+   head.y -= 10;
    break;
    case DOWN:
    // move head down here 
-   head.y += 20;
+   head.y += 10;
    break;
    case LEFT:
    // figure it out
-   head.x -= 20;
+   head.x -= 10;
    break;
    case RIGHT:
    // mystery code goes here 
-   head.x += 20;
+   head.x += 10;
    break;
    }
    checkBoundaries();
@@ -157,8 +180,14 @@ exit();
 void eat(){
   //When the snake eats the food, its tail should grow and more food appears
 if(foodY == head.y && foodX == head.x){
-dropFood();
-  drawFood();
+ dropFood();
+drawFood();
+foodEatenNow = foodEaten;
 foodEaten++;
+//sssss
+manageTail();
+}else{
+foodEatenNow = foodEaten;
+manageTail();
 }
 }
