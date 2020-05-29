@@ -37,7 +37,7 @@ int foodEatenNow;
 //*
 
 void setup() {
-  frameRate(10);
+  frameRate(24);
   head = new Segment(400, 400);
   size(560, 560);
   dropFood();
@@ -174,6 +174,5 @@ void eat() {
     //foodEatenNow = foodEaten;
     foodEaten++;
     tail.add(new Segment(head.x, head.y));
-    println(tail.size());
   }
 }
