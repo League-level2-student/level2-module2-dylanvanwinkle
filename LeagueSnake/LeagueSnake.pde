@@ -54,14 +54,13 @@ void dropFood() {
 // ***** DRAW METHODS *****
 // These methods are used to draw the snake and its food 
 //*
-//
+//ssb 
 void draw() {
   background(#050505);
   drawFood();
   move();
   drawSnake();
-  //manageTail();
-  eat();
+  eat();//csssss
 }
 
 void drawFood() {
